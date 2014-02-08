@@ -1,7 +1,8 @@
 // TODO Set irrigation interval
 var maxHistorySize = 250,
+	readingScale = 256,
 	handlers = {
-		'#btn-lighting-on': function() {
+		/*'#btn-lighting-on': function() {
 			sendSocket('lighting:1');
 		},
 		'#btn-lighting-off': function() {
@@ -9,23 +10,22 @@ var maxHistorySize = 250,
 		},
 		'#btn-lighting-auto': function() {
 			sendSocket('lighting:2');
+		},*/
+
+		/*'state.irrigation': function(request) {
+			updateControlUI('irrigation', parseInt(request.parameters[0], 10));
+		},
+		'status.irrigation': function(request) {
+			updateStatusUI('irrigation', parseInt(request.parameters[0]) === 1);
 		},
 
-		'irrigation': function(request) {
-			// TODO Implement
-		},
 		'state.lighting': function(request) {
 			updateControlUI('lighting', parseInt(request.parameters[0], 10));
 		},
 		'status.lighting': function(request) {
-			var on = parseInt(request.parameters[0]) === 1;
+			updateStatusUI('lighting', parseInt(request.parameters[0]) === 1);
+		},*/
 
-			if (on) {
-				$('.status-lighting').addClass('status-active');
-			} else {
-				$('.status-lighting').removeClass('status-active');
-			}
-		},
 		'oxygen': function(request) {
 			// TODO Implement
 		},
@@ -36,7 +36,7 @@ var maxHistorySize = 250,
 				i;
 
 			for (i = 0; i < values.length; i++) {
-				values[i] = parseInt(values[i], 10);
+				values[i] = parseInt(values[i], 10) / readingScale * 100;
 			}
 
 			if (type === 'light-level') {
@@ -47,7 +47,7 @@ var maxHistorySize = 250,
 		},
 
 		'light-level': function(request) {
-			var level = parseInt(request.parameters[0], 10);
+			var level = parseInt(request.parameters[0], 10) / readingScale * 100;
 
 			if (lightLevel.length >= maxHistorySize) {
 				lightLevel.shift();
@@ -97,6 +97,14 @@ function updateControlUI(control, mode) {
 	}
 }
 
+function updateStatusUI(control, mode) {
+	if (mode) {
+		$('.status-' + control).addClass('status-active');
+	} else {
+		$('.status-' + control).removeClass('status-active');
+	}
+}
+
 function drawLightLevelGraph() {
 	$('#light-level-graph').highcharts({
 		title: {
@@ -137,7 +145,10 @@ function drawLightLevelGraph() {
 		}],
 		plotOptions: {
 			line: {
-				animation: firstLightLevelRender
+				animation: firstLightLevelRender,
+				marker: {
+					enabled: false
+				}
 			}
 		}
 	});
@@ -154,6 +165,7 @@ function init() {
 
 	setupSocket(config.socket.host, config.socket.port);
 	setupHandlers();
+	setupUI();
 }
 
 function setupHandlers() {
@@ -164,11 +176,53 @@ function setupHandlers() {
 	}
 }
 
+function setupUI() {
+	$('.state-btn').each(function() {
+		setupStateBtn($(this));
+	});
+
+	$('#lighting-threshold').keyup(function() {
+		var raw = $(this).val(),
+			numeric = parseInt(raw, 10),
+			value;
+
+		if (numeric.toString() !== raw) {
+			log('ignore light', raw);
+
+			return;
+		}
+
+		value = numeric;
+
+		sendSocket('lighting-threshold:' + value);
+	});
+}
+
+function setupStateBtn(el) {
+	var type = el.data('type'),
+		state = el.data('state');
+
+	el.click(function() {
+		sendSocket(type + ':' + state);
+	});
+
+	handlers['state.' + type] = function(request) {
+		updateControlUI(type, parseInt(request.parameters[0], 10));
+	};
+
+	handlers['status.' + type] = function(request) {
+		updateStatusUI(type, parseInt(request.parameters[0]) === 1);
+	};
+
+	el.prop('disabled', true);
+}
+
 function onOpen() {
 	sendSocket('get-irrigation');
 	sendSocket('get-lighting');
 	sendSocket('get-oxygen');
 
+	sendSocket('get-config');
 	sendSocket('get-history:light-level');
 }
 
@@ -182,12 +236,12 @@ function setupSocket(host, port) {
 
 		log('SOCKET < ' + message.data);
 
-		if (typeof(handlers[request.name]) === 'function') {
-			//log('! Handling request', request);
-
-			handlers[request.name].apply(handlers[request.name], [request]);
-		} else {
-			log('- Unknown request', request);
+		if (!handleSystemRequest(request)) {
+			if (typeof(handlers[request.name]) === 'function') {
+				handlers[request.name].apply(handlers[request.name], [request]);
+			}/* else {
+				log('- Unknown request', request);
+			}*/
 		}
 	};
 
@@ -204,6 +258,25 @@ function setupSocket(host, port) {
 	ws.onerror = function() {
 		log('- Connection error');
 	};
+}
+
+function handleSystemRequest(request) {
+	switch (request.name) {
+		case 'config':
+			handleConfig(JSON.parse(request.original.substr(7)));
+		break;
+
+		default:
+			return false;
+	}
+
+	return true;
+}
+
+function handleConfig(config) {
+	$('#lighting-threshold').prop('disabled', false).val(config.lighting.threshold);
+	$('#irrigation-interval').prop('disabled', false).val(config.irrigation.interval / (1000 * 60)); // minutes
+	$('#irrigation-duration').prop('disabled', false).val(config.irrigation.duration / 1000); // seconds
 }
 
 function parseMessage(message) {

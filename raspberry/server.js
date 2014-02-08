@@ -11,6 +11,13 @@ var serialAPI = require('serialport'),
 			host: '127.0.0.1',
 			port: 8080
 		},
+		lighting: {
+			threshold: 50
+		},
+		irrigation: {
+			interval: 60 * 60 * 1000,
+			duration: 10 * 1000
+		},
 		//acquisitionInterval: 60000
 		acquisitionInterval: 10000
 	},
@@ -81,6 +88,18 @@ var serialAPI = require('serialport'),
 
 			'get-light-level': function(request) {
 				sendSocket('oxygen:' + state.oxygen);
+			},
+
+			'get-config': function() {
+				sendConfig();
+			},
+
+			'lighting-threshold': function(request) {
+				var value = Math.min(Math.max(parseInt(request.parameters[0], 10), 0), 100);
+
+				config.lighting.threshold = value;
+
+				sendConfig();
 			}
 		}
 	};
@@ -89,6 +108,10 @@ function setState(name, value) {
 	state[name] =  parseInt(value, 10);
 
 	tick();
+}
+
+function sendConfig() {
+	sendSocket('config:' + JSON.stringify(config));
 }
 
 function log() {

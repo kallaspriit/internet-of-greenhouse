@@ -2,7 +2,7 @@ BODY {
 	padding-top: 50px;
 }
 .ctrl-label {
-	font-size: 2.2em;
+	font-size: 2.0em;
 }
 .row-status {
 	padding: 6px 0;
@@ -10,6 +10,29 @@ BODY {
 }
 .status-active {
 	background-color: rgba(56, 255, 0, 0.1);
+}
+.section-title {
+	margin-top: 2em;
+}
+.addon-fixed-size {
+	width: 50px;
+}
+
+.custom-icon {
+	position: relative;
+	display: inline-block;
+	width: 32px;
+	height: 32px;
+	margin-right: 10px;
+	top: 7px;
+	background-position: center center;
+	background-repeat: no-repeat;
+}
+.custom-icon-irrigation {
+	background-image: url(images/irrigation.png);
+}
+.custom-icon-lighting {
+	background-image: url(images/lighting.png);
 }
 
 #light-level-graph {

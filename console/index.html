@@ -10,7 +10,7 @@
 	<link href="style.css" rel="stylesheet">
 	<script src="lib/jquery/jquery.js"></script>
 	<script src="lib/highcharts/highcharts.js"></script>
-	<script src="lib/bootstrap/boostrap.js"></script>
+	<script src="lib/bootstrap/js/bootstrap.js"></script>
 	<!--[if lt IE 9]>
 	<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
 	<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
@@ -43,27 +43,71 @@
 		<div class="row">
 			<div class="col-lg-6">
 				<h1>Controls</h1>
-				<div class="row row-status status-lighting">
+				<div class="row row-status status-irrigation">
 					<div class="col-lg-6 ctrl-label">
-						<span class="glyphicon glyphicon-flash"></span> Lighting
+						<span class="custom-icon custom-icon-irrigation"></span> Irrigation
 					</div>
 					<div class="col-lg-6">
-						<div class="btn-group btn-group-lg">
-							<button id="btn-lighting-auto" class="btn btn-default lighting-btn">Auto</button>
-							<button id="btn-lighting-on" class="btn btn-default lighting-btn">On</button>
-							<button id="btn-lighting-off" class="btn btn-default lighting-btn">Off</button>
+						<div class="btn-group btn-group-lg pull-right">
+							<button id="btn-irrigation-auto" class="btn btn-default state-btn irrigation-btn" data-type="irrigation" data-state="2">Auto</button>
+							<button id="btn-irrigation-on" class="btn btn-default state-btn irrigation-btn" data-type="irrigation" data-state="1">On</button>
+							<button id="btn-irrigation-off" class="btn btn-default state-btn irrigation-btn" data-type="irrigation" data-state="0">Off</button>
+						</div>
+					</div>
+				</div>
+				<div class="row row-status status-lighting">
+					<div class="col-lg-6 ctrl-label">
+						<span class="custom-icon custom-icon-lighting"></span> Lights
+					</div>
+					<div class="col-lg-6">
+						<div class="btn-group btn-group-lg pull-right">
+							<button id="btn-lighting-auto" class="btn btn-default state-btn lighting-btn" data-type="lighting" data-state="2">Auto</button>
+							<button id="btn-lighting-on" class="btn btn-default state-btn lighting-btn" data-type="lighting" data-state="1">On</button>
+							<button id="btn-lighting-off" class="btn btn-default state-btn lighting-btn" data-type="lighting" data-state="0">Off</button>
 						</div>
 					</div>
 				</div>
 
+				<h1 class="section-title">Setup</h1>
+				<div class="row row-status">
+					<div class="col-lg-6 ctrl-label">
+						Lighting threshold
+					</div>
+					<div class="col-lg-3 col-lg-push-3">
+						<div class="input-group input-group-lg pull-right">
+							<input id="lighting-threshold" type="text" class="form-control" disabled="disabled">
+							<span class="input-group-addon addon-fixed-size">%</span>
+						</div>
+					</div>
+				</div>
+				<div class="row row-status">
+					<div class="col-lg-6 ctrl-label">
+						Irrigation interval
+					</div>
+					<div class="col-lg-3 col-lg-push-3">
+						<div class="input-group input-group-lg pull-right">
+							<input id="irrigation-interval" type="text" class="form-control" disabled="disabled">
+							<span class="input-group-addon addon-fixed-size">m</span>
+						</div>
+					</div>
+				</div>
+				<div class="row row-status">
+					<div class="col-lg-6 ctrl-label">
+						Irrigation duration
+					</div>
+					<div class="col-lg-3 col-lg-push-3">
+						<div class="input-group input-group-lg pull-right">
+							<input id="irrigation-duration" type="text" class="form-control" disabled="disabled">
+							<span class="input-group-addon addon-fixed-size">s</span>
+						</div>
+					</div>
+				</div>
 			</div>
 			<div class="col-lg-6">
 				<h1>Light intensity</h1>
 				<div id="light-level-graph"></div>
 			</div>
 		</div>
-
-
 	</div>
 </body>
 </html>
