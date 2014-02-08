@@ -315,7 +315,7 @@ function bootstrap() {
 				name: ports[i].manufacturer
 			});
 
-			if (ports[i].manufacturer.indexOf('PJRC') !== -1) {
+			if (typeof(ports[i].manufacturer) !== 'string' || ports[i].manufacturer.indexOf('PJRC') !== -1) {
 				log('! Found hardware on ' + ports[i].comName);
 
 				portName = ports[i].comName;
