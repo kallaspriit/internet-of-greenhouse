@@ -15,26 +15,34 @@ var serialAPI = require('serialport'),
 	},
 	handlers = {
 		serial: {
-
+			'lighting': function(request) {
+				state.lighting = parseInt(request.parameters[0], 10);
+			}
 		},
 		socket: {
 			'lighting': function(request) {
-				state.lighting = parseInt(request.parameters[0], 10) === 1 ? 1 : 0;
-
-				sendSerial('<lighting:' + state.lighting + '>');
+				setState('lighting', request.parameters[0]);
+			},
+			'get-is-lighting': function(request) {
 				sendSocket('lighting:' + state.lighting);
 			}
 		}
 	};
 
+function setState(name, value) {
+	state[name] =  parseInt(value, 10);
+	sendSerial(name  + ':' + state[name]);
+	sendSocket(name  + ':' + state[name]);
+}
+
 function log() {
 	console.log.apply(console, arguments);
 }
 
-function sendSerial(message, callback) {
+function sendSerial(message) {
 	log('SERIAL > ' + message);
 
-	serialPort.write(message + '\n', typeof(callback) === 'function' ? callback : null);
+	serialPort.write(message);
 }
 
 function sendSocket(message) {
@@ -57,11 +65,13 @@ function setupSerial() {
 	});
 
 	serialPort.on('open',function() {
-		log('! Port opened');
+		log('! Serial connection opened');
 
 		serialPort.on('data', function(data) {
 			handleSerialMessage(data);
 		});
+
+		onSerialOpen();
 	});
 }
 
@@ -82,13 +92,18 @@ function setupSocket(host, port) {
 	});
 }
 
+function onSerialOpen() {
+	sendSerial('get-lighting');
+	// TODO Add others
+}
+
 function handleSerialMessage(message) {
 	var request = parseMessage(message);
 
 	log('SERIAL < ' + message);
 
 	if (typeof(handlers.serial[request.name]) === 'function') {
-		log('! Handling serial request', request);
+		//log('! Handling serial request', request);
 
 		handlers.serial[request.name].apply(handlers[request.name], [request]);
 	} else {
@@ -102,7 +117,7 @@ function handleSocketMessage(message) {
 	log('SOCKET < ' + message);
 
 	if (typeof(handlers.socket[request.name]) === 'function') {
-		log('! Handling socket request', request);
+		//log('! Handling socket request', request);
 
 		handlers.socket[request.name].apply(handlers[request.name], [request]);
 	} else {

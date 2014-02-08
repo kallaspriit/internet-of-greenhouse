@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<diagram program="umlet" version="12.2">
+<diagram program="umlet" version="12.0">
   <zoom_level>10</zoom_level>
   <element>
     <type>com.umlet.element.Relation</type>
@@ -170,12 +170,12 @@ oxinate water</panel_attributes>
     </coordinates>
     <panel_attributes>Response
 --
-&lt;light-level:0-256&gt;
-&lt;moisture-level:0-256&gt;
-&lt;irrigation:0/1&gt; - off/on
-&lt;lighting:0/1&gt;
-&lt;oxygen:0/1&gt;
-&lt;valve:0/1&gt;</panel_attributes>
+light-level:0-256
+moisture-level:0-256
+irrigation:0/1 - off/on
+lighting:0/1
+oxygen:0/1
+valve:0/1</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -238,16 +238,16 @@ gravity irrigation</panel_attributes>
     </coordinates>
     <panel_attributes>Command
 --
-&lt;irrigation:0/1&gt; - off/on
-&lt;lighting:0/1&gt;
-&lt;oxygen:0/1&gt;
-&lt;valve:0/1&gt;
-&lt;get-light-level&gt;
-&lt;get-moisture-level&gt;
-&lt;get-is-irrigation&gt;
-&lt;get-is-lighting&gt;
-&lt;get-is-oxygen&gt;
-&lt;get-is-valve&gt;</panel_attributes>
+irrigation:0/1 - off/on
+lighting:0/1
+oxygen:0/1
+valve:0/1
+get-light-level
+get-moisture-level
+get-irrigation
+get-lighting
+get-oxygen
+get-valve</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
