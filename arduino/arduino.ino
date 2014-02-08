@@ -9,6 +9,7 @@ void setup() {
 void loop() {
   Action action = None;
   int val;
+  int sensorValue;
   
   receiveData(action, val);
   
@@ -37,7 +38,8 @@ void loop() {
       sendFormattedStr("valve", 0);
       break;
     case GetLightLevel:
-      sendFormattedStr("light-level", 0);
+      sensorValue = analogRead(A0);
+      sendFormattedStr("light-level", sensorValue);
       break;
     case GetMoistureLevel:
       sendFormattedStr("moisture-level", 0);

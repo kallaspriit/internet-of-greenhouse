@@ -2,7 +2,7 @@
 
 
 void sendFormattedStr(String name, int value) {
-  Serial.println("<" + name + ":" + value + ">");
+  Serial.println(name + ":" + value + "");
 }
 
 
@@ -24,11 +24,7 @@ int parseFormattedStr(String str, String& paramName, int& value) {
   bool colonFound = false;
   String nrStr;
   
-  if (str[0] != '<') return -1;
-  
-  for (int i=1; i<str.length(); i++) {
-    if (str[i] == '>') break;
-    
+  for (int i=0; i<str.length(); i++) {
     if (str[i] != ':') {
       if (!colonFound)
         paramName += str[i];
@@ -39,6 +35,6 @@ int parseFormattedStr(String str, String& paramName, int& value) {
     }
   }
 
-  value = nrStr.toInt();  
+  value = nrStr.toInt();
   return 0;
 }
