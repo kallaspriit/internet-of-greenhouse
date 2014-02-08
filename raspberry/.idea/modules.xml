@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/respberry.iml" filepath="$PROJECT_DIR$/.idea/respberry.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/raspberry.iml" filepath="$PROJECT_DIR$/.idea/raspberry.iml" />
     </modules>
   </component>
 </project>
