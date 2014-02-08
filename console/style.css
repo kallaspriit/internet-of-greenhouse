@@ -7,6 +7,7 @@ BODY {
 .row-status {
 	padding: 6px 0;
 	border-radius: 4px;
+	margin-bottom: 2px;
 }
 .status-active {
 	background-color: rgba(56, 255, 0, 0.1);

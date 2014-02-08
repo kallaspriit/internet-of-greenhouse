@@ -43,6 +43,8 @@ var serialAPI = require('serialport'),
 		oxygen: Status.OFF,
 		lightLevel: 0
 	},
+	lastState = null,
+	lastStatus = null,
 	handlers = {
 		serial: {
 			/*'irrigation': function(request) {
@@ -92,7 +94,11 @@ var serialAPI = require('serialport'),
 				sendSocket('oxygen:' + state.oxygen);
 			},
 			'get-config': function() {
+				lastState = null;
+				lastStatus = null;
+
 				sendConfig();
+				tick();
 			},
 
 			// configuration parameters
@@ -230,29 +236,37 @@ function tick(dt) {
 
 	switch (state.irrigation) {
 		case State.ON:
-			status.lighting = Status.ON;
-			break;
+			status.irrigation = Status.ON;
+		break;
 
 		case State.OFF:
-			status.lighting = Status.OFF;
-			break;
+			status.irrigation = Status.OFF;
+		break;
 
 		case State.AUTO:
-			status.lighting = status.lightLevel / config.readingScale * 100 <= config.lighting.threshold
-				? Status.ON
-				: Status.OFF;
-			break;
+			status.irrigation = Status.OFF; // TODO
+		break;
 	}
 
-	// TODO Only send changes
 	for (name in state) {
-		sendSocket('state.' + name  + ':' + state[name]);
+		if (lastState === null || lastState[name] !== state[name]) {
+			sendSocket('state.' + name  + ':' + state[name]);
+		}
 	}
 
 	for (name in status) {
-		sendSerial(name  + ':' + status[name]);
-		sendSocket('status.' + name  + ':' + status[name]);
+		if (lastStatus === null || lastStatus[name] !== status[name]) {
+			sendSerial(name  + ':' + status[name]);
+			sendSocket('status.' + name  + ':' + status[name]);
+		}
 	}
+
+	lastState = deepClone(state);
+	lastStatus = deepClone(status);
+}
+
+function deepClone(obj) {
+	return JSON.parse(JSON.stringify(obj));
 }
 
 function onSerialOpen() {
