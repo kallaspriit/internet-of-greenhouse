@@ -359,8 +359,8 @@ function bootstrap() {
 function init(portName) {
 	log('! Initiating on ' + portName);
 
-	setupSerial();
 	setupSocket(config.socket.host, config.socket.port);
+	setupSerial();
 	setupTicker();
 }
 
