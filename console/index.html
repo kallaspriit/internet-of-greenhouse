@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Internet of Greenhouse</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1 minimum-scale=1, maximum-scale=1, user-scalable=no">
+	<meta name="HandheldFriendly" content="True">
+	<script src="lib/jquery/jquery.js"></script>
+	<script src="lib/highcharts/highcharts.js"></script>
+	<script src="console.js"></script>
+	<style>
+
+		#lighting-indicator {
+			width: 40px;
+			height: 40px;
+			border: 1px solid #CCC;
+			background-color: #EEE;
+			border-radius: 20px;
+			margin-bottom: 20px;
+		}
+		#lighting-indicator.on {
+			background-color: #F00;
+		}
+		#light-level-graph {
+			min-width: 310px;
+			height: 400px;
+			margin: 0 auto;
+		}
+
+	</style>
+</head>
+<body>
+	<div id="lighting-indicator"></div>
+	<button id="btn-on">ON</button>
+	<button id="btn-off">OFF</button>
+	<div id="light-level-graph"></div>
+</body>
+</html>

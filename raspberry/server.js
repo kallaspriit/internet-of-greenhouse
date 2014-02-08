@@ -4,27 +4,68 @@ var serialAPI = require('serialport'),
 	ws = null,
 	serialPorts = [],
 	serialPort = null,
+	updateInterval = null;
 	config = {
 		socket: {
 			host: '127.0.0.1',
 			port: 8080
-		}
+		},
+		//acquisitionInterval: 60000
+		acquisitionInterval: 10000
 	},
 	state = {
-		lighting: 0
+		irrigation: 0,
+		lighting: 0,
+		oxygen: 0,
+		lightLevel: -1
 	},
 	handlers = {
 		serial: {
+			'irrigation': function(request) {
+				state.irrigation = parseInt(request.parameters[0], 10);
+
+				sendSocket('irrigation:' + state.irrigation);
+			},
 			'lighting': function(request) {
 				state.lighting = parseInt(request.parameters[0], 10);
+
+				sendSocket('lighting:' + state.lighting);
+			},
+			'oxygen': function(request) {
+				state.oxygen = parseInt(request.parameters[0], 10);
+
+				sendSocket('oxygen:' + state.oxygen);
+			},
+
+			'light-level': function(request) {
+				state.lightLevel = parseInt(request.parameters[0], 10);
+
+				sendSocket('light-level:' + state.lightLevel);
 			}
 		},
 		socket: {
+			'irrigation': function(request) {
+				setState('irrigation', request.parameters[0]);
+			},
 			'lighting': function(request) {
 				setState('lighting', request.parameters[0]);
 			},
-			'get-is-lighting': function(request) {
+			'oxygen': function(request) {
+				setState('oxygen', request.parameters[0]);
+			},
+
+			'get-irrigation': function(request) {
+				sendSocket('irrigation:' + state.irrigation);
+			},
+			'get-lighting': function(request) {
 				sendSocket('lighting:' + state.lighting);
+			},
+			'get-oxygen': function(request) {
+				sendSocket('oxygen:' + state.oxygen);
+			},
+
+			'get-light-level': function(request) {
+				sendSocket('oxygen:' + state.oxygen);
 			}
 		}
 	};
@@ -84,6 +125,8 @@ function setupSocket(host, port) {
 
 	ws.on('open', function() {
 		log('! Socket connection opened');
+
+		onSocketOpen();
 	});
 
 	ws.on('message', function(message/*, flags*/) {
@@ -93,8 +136,27 @@ function setupSocket(host, port) {
 }
 
 function onSerialOpen() {
+	sendSerial('get-irrigation');
 	sendSerial('get-lighting');
-	// TODO Add others
+	sendSerial('get-oxygen');
+
+	if (updateInterval !== null) {
+		clearInterval(updateInterval);
+	}
+
+	updateInterval = setInterval(function() {
+		requestUpdate();
+	}, config.acquisitionInterval);
+
+	requestUpdate();
+}
+
+function onSocketOpen() {
+	sendSocket('become-device');
+}
+
+function requestUpdate() {
+	sendSerial('get-light-level');
 }
 
 function handleSerialMessage(message) {

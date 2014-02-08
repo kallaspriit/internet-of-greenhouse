@@ -1,6 +1,9 @@
 int ledPin = 13;
 int incomingByte;
+int irrigation = 0;
 int lighting = 0;
+int oxygen = 0;
+int lightLevel = 0;
 
 void setup() {
   Serial.begin(9600);
@@ -43,9 +46,26 @@ void handleCommand(String param, int value) {
     }
     
     digitalWrite(ledPin, lighting ? HIGH : LOW);
+  } else if (param == "get-irrigation") {
+    Serial.print("irrigation:");
+    Serial.println(irrigation);
   } else if (param == "get-lighting") {
     Serial.print("lighting:");
     Serial.println(lighting);
+  } else if (param == "get-oxygen") {
+    Serial.print("oxygen:");
+    Serial.println(oxygen);
+  } else if (param == "get-light-level") {
+    lightLevel += random(-25, 25);
+    
+    if (lightLevel < 0) {
+      lightLevel = 0; 
+    } else if (lightLevel > 255) {
+      lightLevel = 255; 
+    }
+    
+    Serial.print("light-level:");
+    Serial.println(lightLevel);
   } else {
     Serial.print("- Unimplemented command: '");
     Serial.print(param);
