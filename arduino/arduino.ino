@@ -12,8 +12,7 @@ void loop() {
   int sensorValue;
   
   receiveData(action, val);
-  
-  
+
   switch (action) {
     case None:
       break;
@@ -49,5 +48,5 @@ void loop() {
   }
   
   
-  delay(1000);
+  //delay(1000);
 }

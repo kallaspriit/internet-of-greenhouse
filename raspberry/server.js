@@ -19,7 +19,8 @@ var serialAPI = require('serialport'),
 			duration: 10 * 1000
 		},
 		//acquisitionInterval: 60000
-		acquisitionInterval: 10000
+		acquisitionInterval: 1000,
+		readingScale: 1024
 	},
 	State = {
 		OFF: 0,
@@ -198,7 +199,8 @@ function setupTicker() {
 }
 
 function tick(dt) {
-	var name;
+	var name,
+		enable;
 
 	switch (state.lighting) {
 		case State.ON:
@@ -210,8 +212,26 @@ function tick(dt) {
 		break;
 
 		case State.AUTO:
-			status.lighting = status.lighting === Status.ON ? Status.OFF : Status.ON; // TODO Add logic
+			status.lighting = status.lightLevel / config.readingScale * 100 <= config.lighting.threshold
+				? Status.ON
+				: Status.OFF;
 		break;
+	}
+
+	switch (state.irrigation) {
+		case State.ON:
+			status.lighting = Status.ON;
+			break;
+
+		case State.OFF:
+			status.lighting = Status.OFF;
+			break;
+
+		case State.AUTO:
+			status.lighting = status.lightLevel / config.readingScale * 100 <= config.lighting.threshold
+				? Status.ON
+				: Status.OFF;
+			break;
 	}
 
 	// TODO Only send changes
@@ -258,9 +278,9 @@ function handleSerialMessage(message) {
 		//log('! Handling serial request', request);
 
 		handlers.serial[request.name].apply(handlers[request.name], [request]);
-	} else {
+	}/* else {
 		log('- Unknown serial request', request);
-	}
+	}*/
 }
 
 function handleSocketMessage(message) {
@@ -315,7 +335,11 @@ function bootstrap() {
 				name: ports[i].manufacturer
 			});
 
-			if (typeof(ports[i].manufacturer) !== 'string' || ports[i].manufacturer.indexOf('PJRC') !== -1) {
+			if (
+				typeof(ports[i].manufacturer) !== 'string'
+				|| ports[i].manufacturer.indexOf('PJRC') !== -1
+				|| ports[i].manufacturer.toLowerCase().indexOf('arduino') !== -1
+			) {
 				log('! Found hardware on ' + ports[i].comName);
 
 				portName = ports[i].comName;

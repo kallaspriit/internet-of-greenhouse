@@ -1,6 +1,6 @@
 // TODO Set irrigation interval
 var maxHistorySize = 250,
-	readingScale = 256,
+	readingScale = 1024,
 	handlers = {
 		/*'#btn-lighting-on': function() {
 			sendSocket('lighting:1');
@@ -181,7 +181,7 @@ function setupUI() {
 		setupStateBtn($(this));
 	});
 
-	$('#lighting-threshold').keyup(function() {
+	$('#lighting-threshold').change(function() {
 		var raw = $(this).val(),
 			numeric = parseInt(raw, 10),
 			value;
@@ -195,7 +195,7 @@ function setupUI() {
 		sendSocket('lighting-threshold:' + value);
 	});
 
-	$('#irrigation-interval').keyup(function() {
+	$('#irrigation-interval').change(function() {
 		var raw = $(this).val(),
 			numeric = parseInt(raw, 10),
 			value;
@@ -209,7 +209,7 @@ function setupUI() {
 		sendSocket('irrigation-interval:' + value);
 	});
 
-	$('#irrigation-duration').keyup(function() {
+	$('#irrigation-duration').change(function() {
 		var raw = $(this).val(),
 			numeric = parseInt(raw, 10),
 			value;

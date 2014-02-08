@@ -25,6 +25,10 @@ int parseFormattedStr(String str, String& paramName, int& value) {
   String nrStr;
   
   for (int i=0; i<str.length(); i++) {
+    if (str[i] == '\n' || str[i] == '\r') {
+      break; 
+    }
+    
     if (str[i] != ':') {
       if (!colonFound)
         paramName += str[i];
