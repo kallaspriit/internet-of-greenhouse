@@ -187,14 +187,26 @@ function setupUI() {
 			value;
 
 		if (numeric.toString() !== raw) {
-			log('ignore light', raw);
-
 			return;
 		}
 
 		value = numeric;
 
 		sendSocket('lighting-threshold:' + value);
+	});
+
+	$('#irrigation-interval').keyup(function() {
+		var raw = $(this).val(),
+			numeric = parseInt(raw, 10),
+			value;
+
+		if (numeric.toString() !== raw) {
+			return;
+		}
+
+		value = numeric * 60 * 1000;
+
+		sendSocket('irrigation-interval:' + value);
 	});
 }
 
