@@ -31,6 +31,8 @@ function init(host, port) {
 		client.on('message', function(message) {
 			log('[' + client.id + '] > ' + message);
 
+			broadcast(message, client);
+
 			/*if (message.substr(0, 1) === '{') {
 				var request = JSON.parse(message),
 					parameters = request.parameters,
@@ -93,22 +95,21 @@ function init(host, port) {
 
 			return this.send.call(this.client, message);
 		}.bind({ client: client, send: client.send });
-
-		// TODO Remove test
-		setInterval(function() {
-			var i;
-
-			for (i = 0; i < clients.length; i++) {
-				clients[i].send({
-					type: 'hello',
-					data: {
-						clientId: clients[i].id,
-						timestamp: (new Date()).getTime()
-					}
-				});
-			}
-		}, 1000);
 	});
+
+	test();
+}
+
+function broadcast(message, exclude) {
+	var i;
+
+	for (i = 0; i < clients.length; i++) {
+		if (clients[i] === exclude) {
+			continue;
+		}
+
+		clients[i].send(message);
+	}
 }
 
 function test() {
@@ -116,6 +117,14 @@ function test() {
 }
 
 function bootstrap() {
+	if (process.argv.length >= 3) {
+		config.socket.host = process.argv[2];
+	}
+
+	if (process.argv.length >= 4) {
+		config.socket.port = process.argv[3];
+	}
+
 	init(config.socket.host, config.socket.port);
 }
 

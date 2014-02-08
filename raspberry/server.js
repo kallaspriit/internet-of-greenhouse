@@ -1,4 +1,4 @@
-var serialAPI = require('serialport'), //https://github.com/voodootikigod/node-serialport
+var serialAPI = require('serialport'),
 	SerialPort = serialAPI.SerialPort,
 	WebSocket = require('ws'),
 	ws = null,
@@ -9,6 +9,22 @@ var serialAPI = require('serialport'), //https://github.com/voodootikigod/node-s
 			host: '127.0.0.1',
 			port: 8080
 		}
+	},
+	state = {
+		lighting: 0
+	},
+	handlers = {
+		serial: {
+
+		},
+		socket: {
+			'lighting': function(request) {
+				state.lighting = parseInt(request.parameters[0], 10) === 1 ? 1 : 0;
+
+				sendSerial('<lighting:' + state.lighting + '>');
+				sendSocket('lighting:' + state.lighting);
+			}
+		}
 	};
 
 function log() {
@@ -16,13 +32,13 @@ function log() {
 }
 
 function sendSerial(message, callback) {
-	log('SERIAL < ' + message);
+	log('SERIAL > ' + message);
 
 	serialPort.write(message + '\n', typeof(callback) === 'function' ? callback : null);
 }
 
 function sendSocket(message) {
-	log('SOCKET < ' + message);
+	log('SOCKET > ' + message);
 
 	ws.send(message);
 }
@@ -43,25 +59,9 @@ function setupSerial() {
 	serialPort.on('open',function() {
 		log('! Port opened');
 
-		// TODO Remove test
-		var on = false;
-
-		setInterval(function() {
-			on = !on;
-
-			sendSerial(on ? 'H' : 'L');
-		}, 500);
-
 		serialPort.on('data', function(data) {
-			log('SERIAL > ' + data);
-
-			/*broadcastAll({
-			 type: 'device',
-			 data: data
-			 });*/
+			handleSerialMessage(data);
 		});
-
-		//sendSerial('<RESET>');
 	});
 }
 
@@ -74,16 +74,71 @@ function setupSocket(host, port) {
 
 	ws.on('open', function() {
 		log('! Socket connection opened');
-
-		sendSocket('hello!');
 	});
 
-	ws.on('message', function(data/*, flags*/) {
-		log('SOCKET < ' + data);
+	ws.on('message', function(message/*, flags*/) {
+		handleSocketMessage(message);
+
 	});
 }
 
+function handleSerialMessage(message) {
+	var request = parseMessage(message);
+
+	log('SERIAL < ' + message);
+
+	if (typeof(handlers.serial[request.name]) === 'function') {
+		log('! Handling serial request', request);
+
+		handlers.serial[request.name].apply(handlers[request.name], [request]);
+	} else {
+		log('- Unknown serial request', request);
+	}
+}
+
+function handleSocketMessage(message) {
+	var request = parseMessage(message);
+
+	log('SOCKET < ' + message);
+
+	if (typeof(handlers.socket[request.name]) === 'function') {
+		log('! Handling socket request', request);
+
+		handlers.socket[request.name].apply(handlers[request.name], [request]);
+	} else {
+		log('- Unknown socket request', request);
+	}
+}
+
+function parseMessage(message) {
+	var delimiterPos = message.indexOf(':'),
+		name = message,
+		parameters = [],
+		tokens;
+
+	if (delimiterPos !== -1) {
+		tokens = message.split(':');
+		name = tokens[0];
+		parameters = tokens.slice(1);
+	}
+
+	return {
+		name: name,
+		parameters: parameters,
+		original: message,
+		serial: '<' + message + '>'
+	};
+}
+
 function bootstrap() {
+	if (process.argv.length >= 3) {
+		config.socket.host = process.argv[2];
+	}
+
+	if (process.argv.length >= 4) {
+		config.socket.port = process.argv[3];
+	}
+
 	serialAPI.list(function (err, ports) {
 		for (var i = 0; i < ports.length; i++) {
 			log('! Detected port ' + ports[i].comName + '(' + ports[i].manufacturer + ')');
