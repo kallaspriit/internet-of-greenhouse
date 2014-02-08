@@ -89,15 +89,29 @@ var serialAPI = require('serialport'),
 			'get-light-level': function(request) {
 				sendSocket('oxygen:' + state.oxygen);
 			},
-
 			'get-config': function() {
 				sendConfig();
 			},
 
+			// configuration parameters
 			'lighting-threshold': function(request) {
 				var value = Math.min(Math.max(parseInt(request.parameters[0], 10), 0), 100);
 
 				config.lighting.threshold = value;
+
+				sendConfig();
+			},
+			'irrigation-interval': function(request) {
+				var value = Math.max(parseInt(request.parameters[0], 10), 0);
+
+				config.irrigation.interval = value;
+
+				sendConfig();
+			},
+			'irrigation-duration': function(request) {
+				var value = Math.max(parseInt(request.parameters[0], 10), 0);
+
+				config.irrigation.duration = value;
 
 				sendConfig();
 			}

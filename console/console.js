@@ -204,9 +204,23 @@ function setupUI() {
 			return;
 		}
 
-		value = numeric * 60 * 1000;
+		value = numeric * 60 * 1000; // minutes
 
 		sendSocket('irrigation-interval:' + value);
+	});
+
+	$('#irrigation-duration').keyup(function() {
+		var raw = $(this).val(),
+			numeric = parseInt(raw, 10),
+			value;
+
+		if (numeric.toString() !== raw) {
+			return;
+		}
+
+		value = numeric * 1000; // seconds
+
+		sendSocket('irrigation-duration:' + value);
 	});
 }
 
