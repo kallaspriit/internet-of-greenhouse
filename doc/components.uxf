@@ -1,0 +1,433 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="12.0">
+  <zoom_level>10</zoom_level>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>520</x>
+      <y>600</y>
+      <w>90</w>
+      <h>170</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>30;30;70;150</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>220</x>
+      <y>600</y>
+      <w>50</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>30;70;30;30</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>750</x>
+      <y>60</y>
+      <w>150</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.&gt;
+WebSocket</panel_attributes>
+    <additional_attributes>130;50;30;50</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>540</x>
+      <y>250</y>
+      <w>210</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>WebCam
+--
+extra idea
+not sure how to interface</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>1120</x>
+      <y>60</y>
+      <w>150</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.&gt;
+WebSocket</panel_attributes>
+    <additional_attributes>130;50;30;50</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>880</x>
+      <y>40</y>
+      <w>270</w>
+      <h>330</h>
+    </coordinates>
+    <panel_attributes>bt=.
+Cloud Server</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>1280</x>
+      <y>210</y>
+      <w>210</w>
+      <h>140</h>
+    </coordinates>
+    <panel_attributes>Functionality
+--
+water pump on/off/auto
+air pump on/off/auto
+lighting on/off/auto
+moisture graph
+ambient light graph
+water/air/light on graph</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>540</x>
+      <y>120</y>
+      <w>210</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>Server
+--
+node.js server
+ws - web socket client
+serialport - arduino serial
+JavaScript business logic
+automatic control logic</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>380</x>
+      <y>670</y>
+      <w>170</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>Light sensor
+--
+photodiode/solar panel</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>910</x>
+      <y>120</y>
+      <w>210</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>Server
+--
+node.js server
+ws - web socket server
+stores and shares data</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>590</x>
+      <y>670</y>
+      <w>170</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>Air pump
+--
+oxinate water</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>520</x>
+      <y>550</y>
+      <w>90</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>30;30;70;80</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>180</x>
+      <y>330</y>
+      <w>210</w>
+      <h>140</h>
+    </coordinates>
+    <panel_attributes>Response
+--
+&lt;light-level:0-256&gt;
+&lt;moisture-level:0-256&gt;
+&lt;irrigation:0/1&gt; - off/on
+&lt;lighting:0/1&gt;
+&lt;oxygen:0/1&gt;
+&lt;valve:0/1&gt;</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>1280</x>
+      <y>120</y>
+      <w>210</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>Web Browser
+--
+JavaScript
+web-socket client
+Twitter Bootstrap</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>590</x>
+      <y>550</y>
+      <w>170</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>Electronic valve
+--
+gravity irrigation</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>310</x>
+      <y>550</y>
+      <w>90</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>30;30;70;30</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>520</x>
+      <y>570</y>
+      <w>90</w>
+      <h>140</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>30;30;70;120</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>180</x>
+      <y>110</y>
+      <w>210</w>
+      <h>210</h>
+    </coordinates>
+    <panel_attributes>Command
+--
+&lt;irrigation:0/1&gt; - off/on
+&lt;lighting:0/1&gt;
+&lt;oxygen:0/1&gt;
+&lt;valve:0/1&gt;
+&lt;get:light-level&gt;
+&lt;get:moisture-level&gt;
+&lt;get:is-irrigation&gt;
+&lt;get:is-lighting&gt;
+&lt;get:is-oxygen&gt;
+&lt;get:is-valve&gt;</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>110</x>
+      <y>40</y>
+      <w>690</w>
+      <h>790</h>
+    </coordinates>
+    <panel_attributes>bt=.
+Internet of Greenhouse device</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>520</x>
+      <y>540</y>
+      <w>90</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>30;30;70;30</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>1250</x>
+      <y>40</y>
+      <w>270</w>
+      <h>330</h>
+    </coordinates>
+    <panel_attributes>bt=.
+Web Client - Browser</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>170</x>
+      <y>550</y>
+      <w>170</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>Arduino
+--
+serial communication
+sensor readings
+actuator commands</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>590</x>
+      <y>730</y>
+      <w>170</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>LED lighting
+--
+power-led</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>310</x>
+      <y>630</y>
+      <w>90</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>30;40;70;30</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>170</x>
+      <y>670</y>
+      <w>170</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>Raspberry PI
+--
+arduino communication
+node.js server
+business logic
+web-socket client</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>310</x>
+      <y>600</y>
+      <w>90</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>30;30;70;70</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>390</x>
+      <y>70</y>
+      <w>140</w>
+      <h>94</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.&gt;
+USB
+serial</panel_attributes>
+    <additional_attributes>120;50;30;50</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>380</x>
+      <y>550</y>
+      <w>170</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>Electronics board
+--
+12v to 5v regulation
+raspberry power
+air pump relay
+water pump relay
+power led driver</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>510</x>
+      <y>70</y>
+      <w>270</w>
+      <h>420</h>
+    </coordinates>
+    <panel_attributes>bt=.
+Raspberry PI</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>590</x>
+      <y>610</y>
+      <w>170</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>Water pump
+--
+pump to top tank</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>150</x>
+      <y>520</y>
+      <w>630</w>
+      <h>280</h>
+    </coordinates>
+    <panel_attributes>bt=.
+Hardware</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>150</x>
+      <y>70</y>
+      <w>270</w>
+      <h>420</h>
+    </coordinates>
+    <panel_attributes>bt=.
+Arduino</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>
