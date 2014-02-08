@@ -24,19 +24,19 @@ void receiveData(Action& action, int& val) {
 void stringToAction(String& str, Action& action) {
   if (str == "lighting")
     action = SetLightsState;
-  else if (str == "get-is-lighting")
+  else if (str == "get-lighting")
     action = GetLightsState;
   else if (str == "irrigation")
     action = SetPumpState;
-  else if (str == "get-is-irrigation")
+  else if (str == "get-irrigation")
     action = GetPumpState;
   else if (str == "oxygen")
     action = SetAirState;
-  else if (str == "get-is-oxygen")
+  else if (str == "get-oxygen")
     action = GetAirState;
   else if (str == "valve")
     action = SetValveState;
-  else if (str == "get-is-valve")
+  else if (str == "get-valve")
     action = GetValveState;
   else if (str == "get-light-level")
     action = GetLightLevel;
