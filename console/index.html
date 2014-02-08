@@ -3,36 +3,67 @@
 <head>
 	<title>Internet of Greenhouse</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1 minimum-scale=1, maximum-scale=1, user-scalable=no">
 	<meta name="HandheldFriendly" content="True">
+	<link href="lib/bootstrap/css/bootstrap.css" rel="stylesheet">
+	<link href="style.css" rel="stylesheet">
 	<script src="lib/jquery/jquery.js"></script>
 	<script src="lib/highcharts/highcharts.js"></script>
+	<script src="lib/bootstrap/boostrap.js"></script>
+	<!--[if lt IE 9]>
+	<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+	<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+	<![endif]-->
 	<script src="console.js"></script>
-	<style>
-
-		#lighting-indicator {
-			width: 40px;
-			height: 40px;
-			border: 1px solid #CCC;
-			background-color: #EEE;
-			border-radius: 20px;
-			margin-bottom: 20px;
-		}
-		#lighting-indicator.on {
-			background-color: #F00;
-		}
-		#light-level-graph {
-			min-width: 310px;
-			height: 400px;
-			margin: 0 auto;
-		}
-
-	</style>
 </head>
 <body>
-	<div id="lighting-indicator"></div>
-	<button id="btn-on">ON</button>
-	<button id="btn-off">OFF</button>
-	<div id="light-level-graph"></div>
+	<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="#">Internet of Greenhouse</a>
+			</div>
+			<div class="collapse navbar-collapse">
+				<ul class="nav navbar-nav">
+					<li class="active"><a href="#console">Console</a></li>
+					<li><a href="#about">About</a></li>
+					<li><a href="#contact">Shop</a></li>
+					<li><a href="#contact">Contact</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div id="main-contents" class="container">
+		<div class="row">
+			<div class="col-lg-6">
+				<h1>Controls</h1>
+				<div class="row row-status status-lighting">
+					<div class="col-lg-6 ctrl-label">
+						<span class="glyphicon glyphicon-flash"></span> Lighting
+					</div>
+					<div class="col-lg-6">
+						<div class="btn-group btn-group-lg">
+							<button id="btn-lighting-auto" class="btn btn-default lighting-btn">Auto</button>
+							<button id="btn-lighting-on" class="btn btn-default lighting-btn">On</button>
+							<button id="btn-lighting-off" class="btn btn-default lighting-btn">Off</button>
+						</div>
+					</div>
+				</div>
+
+			</div>
+			<div class="col-lg-6">
+				<h1>Light intensity</h1>
+				<div id="light-level-graph"></div>
+			</div>
+		</div>
+
+
+	</div>
 </body>
 </html>

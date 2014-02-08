@@ -1,0 +1,19 @@
+BODY {
+	padding-top: 50px;
+}
+.ctrl-label {
+	font-size: 2.2em;
+}
+.row-status {
+	padding: 6px 0;
+	border-radius: 4px;
+}
+.status-active {
+	background-color: rgba(56, 255, 0, 0.1);
+}
+
+#light-level-graph {
+	min-width: 310px;
+	height: 400px;
+	margin: 0 auto;
+}

@@ -1,27 +1,29 @@
 // TODO Set irrigation interval
 var maxHistorySize = 250,
 	handlers = {
-		'#btn-on': function() {
+		'#btn-lighting-on': function() {
 			sendSocket('lighting:1');
 		},
-		'#btn-off': function() {
+		'#btn-lighting-off': function() {
 			sendSocket('lighting:0');
+		},
+		'#btn-lighting-auto': function() {
+			sendSocket('lighting:2');
 		},
 
 		'irrigation': function(request) {
 			// TODO Implement
 		},
-		'lighting': function(request) {
-			var on = parseInt(request.parameters[0], 10) === 1;
+		'state.lighting': function(request) {
+			updateControlUI('lighting', parseInt(request.parameters[0], 10));
+		},
+		'status.lighting': function(request) {
+			var on = parseInt(request.parameters[0]) === 1;
 
 			if (on) {
-				$('#lighting-indicator').addClass('on');
-				$('#btn-on').prop('disabled', true);
-				$('#btn-off').prop('disabled', false);
+				$('.status-lighting').addClass('status-active');
 			} else {
-				$('#lighting-indicator').removeClass('on');
-				$('#btn-on').prop('disabled', false);
-				$('#btn-off').prop('disabled', true);
+				$('.status-lighting').removeClass('status-active');
 			}
 		},
 		'oxygen': function(request) {
@@ -76,11 +78,30 @@ function sendSocket(message) {
 	ws.send(message);
 }
 
+function updateControlUI(control, mode) {
+	if (mode === 1) { // on
+		$('.' + control + '-btn').prop('disabled', true).removeClass('btn-primary');
+		$('#btn-' + control + '-on').addClass('btn-primary');
+		$('#btn-' + control + '-off').prop('disabled', false);
+		$('#btn-' + control + '-auto').prop('disabled', false);
+	} else if (mode === 2) { // auto
+		$('.' + control + '-btn').prop('disabled', true).removeClass('btn-primary');
+		$('#btn-' + control + '-auto').addClass('btn-primary');
+		$('#btn-' + control + '-on').prop('disabled', false);
+		$('#btn-' + control + '-off').prop('disabled', false);
+	} else { // off
+		$('.' + control + '-btn').prop('disabled', true).removeClass('btn-primary');
+		$('#btn-' + control + '-off').addClass('btn-primary');
+		$('#btn-' + control + '-on').prop('disabled', false);
+		$('#btn-' + control + '-auto').prop('disabled', false);
+	}
+}
+
 function drawLightLevelGraph() {
 	$('#light-level-graph').highcharts({
 		title: {
-			text: 'Light Intensity',
-			x: -20 //center
+			text: ''/*,
+			x: -20 //center*/
 		},
 		/*subtitle: {
 			text: 'Source: WorldClimate.com',

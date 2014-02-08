@@ -5,6 +5,7 @@ var serialAPI = require('serialport'),
 	serialPorts = [],
 	serialPort = null,
 	updateInterval = null;
+	lastTickTime = 0,
 	config = {
 		socket: {
 			host: '127.0.0.1',
@@ -13,15 +14,29 @@ var serialAPI = require('serialport'),
 		//acquisitionInterval: 60000
 		acquisitionInterval: 10000
 	},
+	State = {
+		OFF: 0,
+		ON: 1,
+		AUTO: 2
+	},
+	Status = {
+		OFF: 0,
+		ON: 1
+	},
 	state = {
-		irrigation: 0,
-		lighting: 0,
-		oxygen: 0,
-		lightLevel: -1
+		irrigation: State.AUTO,
+		lighting: State.AUTO,
+		oxygen: State.AUTO
+	},
+	status = {
+		irrigation: Status.OFF,
+		lighting: Status.OFF,
+		oxygen: Status.OFF,
+		lightLevel: 0
 	},
 	handlers = {
 		serial: {
-			'irrigation': function(request) {
+			/*'irrigation': function(request) {
 				state.irrigation = parseInt(request.parameters[0], 10);
 
 				sendSocket('irrigation:' + state.irrigation);
@@ -35,12 +50,12 @@ var serialAPI = require('serialport'),
 				state.oxygen = parseInt(request.parameters[0], 10);
 
 				sendSocket('oxygen:' + state.oxygen);
-			},
+			},*/
 
 			'light-level': function(request) {
-				state.lightLevel = parseInt(request.parameters[0], 10);
+				status.lightLevel = parseInt(request.parameters[0], 10);
 
-				sendSocket('light-level:' + state.lightLevel);
+				sendSocket('light-level:' + status.lightLevel);
 			}
 		},
 		socket: {
@@ -72,8 +87,8 @@ var serialAPI = require('serialport'),
 
 function setState(name, value) {
 	state[name] =  parseInt(value, 10);
-	sendSerial(name  + ':' + state[name]);
-	sendSocket(name  + ':' + state[name]);
+
+	tick();
 }
 
 function log() {
@@ -90,13 +105,6 @@ function sendSocket(message) {
 	log('SOCKET > ' + message);
 
 	ws.send(message);
-}
-
-function init(portName) {
-	log('! Initiating on ' + portName);
-
-	setupSerial();
-	setupSocket(config.socket.host, config.socket.port);
 }
 
 function setupSerial() {
@@ -133,6 +141,51 @@ function setupSocket(host, port) {
 		handleSocketMessage(message);
 
 	});
+}
+
+function setupTicker() {
+	var interval = 1000;
+
+	setInterval(function() {
+		var currentTime = (new Date().getTime());
+			dt = interval;
+
+		if (lastTickTime !== 0) {
+			dt = currentTime - lastTickTime;
+		}
+
+		lastTickTime = currentTime;
+
+		tick(dt);
+	}, interval);
+}
+
+function tick(dt) {
+	var name;
+
+	switch (state.lighting) {
+		case State.ON:
+			status.lighting = Status.ON;
+		break;
+
+		case State.OFF:
+			status.lighting = Status.OFF;
+		break;
+
+		case State.AUTO:
+			status.lighting = status.lighting === Status.ON ? Status.OFF : Status.ON; // TODO Add logic
+		break;
+	}
+
+	// TODO Only send changes
+	for (name in state) {
+		sendSocket('state.' + name  + ':' + state[name]);
+	}
+
+	for (name in status) {
+		sendSerial(name  + ':' + status[name]);
+		sendSocket('status.' + name  + ':' + status[name]);
+	}
 }
 
 function onSerialOpen() {
@@ -241,5 +294,14 @@ function bootstrap() {
 		init(portName);
 	});
 }
+
+function init(portName) {
+	log('! Initiating on ' + portName);
+
+	setupSerial();
+	setupSocket(config.socket.host, config.socket.port);
+	setupTicker();
+}
+
 
 bootstrap();
