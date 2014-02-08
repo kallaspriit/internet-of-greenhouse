@@ -6,6 +6,7 @@ var serialAPI = require('serialport'),
 	serialPort = null,
 	updateInterval = null;
 	lastTickTime = 0,
+	portName = null,
 	config = {
 		socket: {
 			host: '127.0.0.1',
@@ -177,7 +178,10 @@ function setupSocket(host, port) {
 
 	ws.on('message', function(message/*, flags*/) {
 		handleSocketMessage(message);
+	});
 
+	ws.on('error', function() {
+		log('- Opening WebSocket connection failed');
 	});
 }
 
