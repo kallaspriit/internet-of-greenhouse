@@ -141,6 +141,12 @@ function sendSerial(message) {
 }
 
 function sendSocket(message) {
+	if (ws.readyState !== 1) {
+		log('! Socket not ready yet to transmit: ' + message);
+
+		return;
+	}
+
 	log('SOCKET > ' + message);
 
 	ws.send(message);
