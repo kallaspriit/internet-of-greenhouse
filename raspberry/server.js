@@ -1,70 +1,40 @@
 var serialAPI = require('serialport'), //https://github.com/voodootikigod/node-serialport
 	SerialPort = serialAPI.SerialPort,
+	WebSocket = require('ws'),
+	ws = null,
 	serialPorts = [],
-	serialPort = null;
+	serialPort = null,
+	config = {
+		socket: {
+			host: '127.0.0.1',
+			port: 8080
+		}
+	};
 
 function log() {
-	var message = getDatetime() + ' ',
-		items = [getDatetime()],
-		type,
-		i;
-
-	for (i = 0; i < arguments.length; i++) {
-		type = typeof(arguments[i]);
-
-		if (i > 0) {
-			message += ', ';
-		} else {
-			if (typeof(arguments[i]) !== 'string' || arguments[i].substr(0, 1) !== '[') {
-				message += '[S] ';
-			}
-		}
-
-		switch (type) {
-			case 'string':
-				message += arguments[i];
-				break;
-
-			case 'number':
-				message += arguments[i];
-				break;
-
-			default:
-				if (arguments[i] === 'null') {
-					message += 'null';
-				} else {
-					message += JSON.stringify(arguments[i]);
-				}
-				break;
-		}
-
-		items.push(arguments[i]);
-	}
-
-	//fs.appendFileSync(logFilename, message + '\n');
-
-	console.log.apply(console, items);
+	console.log.apply(console, arguments);
 }
 
-function getDatetime(includeSeconds) {
-	var date = new Date();
-
-	return (date.getDate() < 10 ? '0' : '') + date.getDate()
-		+ '.' + (date.getMonth() < 9 ? '0' : '') + (date.getMonth() + 1)
-		+ ' ' + (date.getHours() < 10 ? '0' : '') + date.getHours()
-		+ ':' + (date.getMinutes() < 10 ? '0' : '') + date.getMinutes()
-		+ (includeSeconds !== false ? ':' + (date.getSeconds() < 10 ? '0' : '') + date.getSeconds() : '');
-}
-
-function sendDevice(message, callback) {
-	log('< ' + message);
+function sendSerial(message, callback) {
+	log('SERIAL < ' + message);
 
 	serialPort.write(message + '\n', typeof(callback) === 'function' ? callback : null);
+}
+
+function sendSocket(message) {
+	log('SOCKET < ' + message);
+
+	ws.send(message);
 }
 
 function init(portName) {
 	log('! Initiating on ' + portName);
 
+	setupSerial();
+	setupSocket(config.socket.host, config.socket.port);
+}
+
+function setupSerial() {
 	serialPort = new SerialPort(portName, {
 		baudrate: 9600,
 		parser: serialAPI.parsers.readline('\r\n')
@@ -73,24 +43,43 @@ function init(portName) {
 	serialPort.on('open',function() {
 		log('! Port opened');
 
+		// TODO Remove test
 		var on = false;
 
 		setInterval(function() {
 			on = !on;
 
-			sendDevice(on ? 'H' : 'L');
+			sendSerial(on ? 'H' : 'L');
 		}, 500);
 
 		serialPort.on('data', function(data) {
-			log('> ' + data);
+			log('SERIAL > ' + data);
 
 			/*broadcastAll({
-				type: 'device',
-				data: data
-			});*/
+			 type: 'device',
+			 data: data
+			 });*/
 		});
 
-		//sendDevice('<RESET>');
+		//sendSerial('<RESET>');
+	});
+}
+
+function setupSocket(host, port) {
+	var endpoint = 'ws://' + host + ':' + port + '/';
+
+	log('! Connecting to web-socket server at ' + endpoint);
+
+	ws = new WebSocket(endpoint);
+
+	ws.on('open', function() {
+		log('! Socket connection opened');
+
+		sendSocket('hello!');
+	});
+
+	ws.on('message', function(data/*, flags*/) {
+		log('SOCKET < ' + data);
 	});
 }
 
