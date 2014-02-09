@@ -25,19 +25,19 @@
     <splitter split-orientation="horizontal" split-proportion="0.5">
       <split-first>
         <leaf>
-          <file leaf-file-name="console.js" pinned="false" current="false" current-in-tab="false">
+          <file leaf-file-name="console.js" pinned="false" current="true" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/console.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state line="174" column="10" selection-start="3923" selection-end="3923" vertical-scroll-proportion="0.0" vertical-offset="4011" max-vertical-offset="5712">
+                <state line="239" column="68" selection-start="5196" selection-end="5196" vertical-scroll-proportion="0.6469595" vertical-offset="3680" max-vertical-offset="5712">
                   <folding />
                 </state>
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="style.css" pinned="false" current="true" current-in-tab="true">
+          <file leaf-file-name="style.css" pinned="false" current="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/style.css">
               <provider selected="true" editor-type-id="text-editor">
-                <state line="9" column="23" selection-start="136" selection-end="136" vertical-scroll-proportion="0.25844595" vertical-offset="0" max-vertical-offset="816">
+                <state line="9" column="23" selection-start="136" selection-end="136" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="816">
                   <folding />
                 </state>
               </provider>
@@ -50,7 +50,7 @@
           <file leaf-file-name="index.html" pinned="false" current="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/index.html">
               <provider selected="true" editor-type-id="text-editor">
-                <state line="94" column="53" selection-start="4083" selection-end="4083" vertical-scroll-proportion="2.8896925" vertical-offset="0" max-vertical-offset="2006">
+                <state line="45" column="50" selection-start="1802" selection-end="1812" vertical-scroll-proportion="0.33273056" vertical-offset="581" max-vertical-offset="2006">
                   <folding />
                 </state>
               </provider>
@@ -68,9 +68,9 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/index.html" />
         <option value="$PROJECT_DIR$/console.js" />
         <option value="$PROJECT_DIR$/style.css" />
+        <option value="$PROJECT_DIR$/index.html" />
       </list>
     </option>
   </component>
@@ -210,23 +210,23 @@
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/style.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="9" column="23" selection-start="136" selection-end="136" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="816">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="94" column="53" selection-start="4083" selection-end="4083" vertical-scroll-proportion="2.8896925" vertical-offset="0" max-vertical-offset="2006">
+        <state line="45" column="50" selection-start="1802" selection-end="1812" vertical-scroll-proportion="0.33273056" vertical-offset="581" max-vertical-offset="2006">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/console.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="174" column="10" selection-start="3923" selection-end="3923" vertical-scroll-proportion="0.0" vertical-offset="4011" max-vertical-offset="5712">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/style.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="23" selection-start="136" selection-end="136" vertical-scroll-proportion="0.25844595" vertical-offset="0" max-vertical-offset="816">
+        <state line="239" column="68" selection-start="5196" selection-end="5196" vertical-scroll-proportion="0.6469595" vertical-offset="3680" max-vertical-offset="5712">
           <folding />
         </state>
       </provider>
