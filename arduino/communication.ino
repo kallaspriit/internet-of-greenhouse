@@ -42,6 +42,10 @@ void stringToAction(String& str, Action& action) {
     action = GetLightLevel;
   else if (str == "get-moisture-level")
     action = GetMoistureLevel;
+  else if (str == "ping")
+    action = Ping;
+  else if (str == "reset")
+    action = Reset;
   else
     action = Unknown;
 }
