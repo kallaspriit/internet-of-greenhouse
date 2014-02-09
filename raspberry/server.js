@@ -6,6 +6,9 @@ var serialAPI = require('serialport'),
 	serialPort = null,
 	updateInterval = null;
 	lastTickTime = 0,
+	lastDt = 100,
+	lastIrrigationTime = 0,
+	irrigationDuration = 0,
 	portName = null,
 	config = {
 		socket: {
@@ -16,8 +19,9 @@ var serialAPI = require('serialport'),
 			threshold: 50
 		},
 		irrigation: {
-			interval: 60 * 60 * 1000,
-			duration: 10 * 1000
+			interval: 2 * 60 * 1000,
+			duration: 20 * 1000,
+			preOxinateDuration: 5 * 1000
 		},
 		//acquisitionInterval: 60000
 		acquisitionInterval: 1000,
@@ -43,6 +47,8 @@ var serialAPI = require('serialport'),
 		oxygen: Status.OFF,
 		lightLevel: 0
 	},
+	lastState = null,
+	lastStatus = null,
 	handlers = {
 		serial: {
 			/*'irrigation': function(request) {
@@ -92,7 +98,11 @@ var serialAPI = require('serialport'),
 				sendSocket('oxygen:' + state.oxygen);
 			},
 			'get-config': function() {
+				lastState = null;
+				lastStatus = null;
+
 				sendConfig();
+				tick();
 			},
 
 			// configuration parameters
@@ -192,7 +202,7 @@ function setupSocket(host, port) {
 }
 
 function setupTicker() {
-	var interval = 1000;
+	var interval = 100;
 
 	setInterval(function() {
 		var currentTime = (new Date().getTime());
@@ -204,13 +214,16 @@ function setupTicker() {
 
 		lastTickTime = currentTime;
 
-		tick(dt);
+		tick(dt, currentTime);
 	}, interval);
 }
 
-function tick(dt) {
+function tick(dt, currentTime) {
+	dt = dt || lastDt;
+	currentTime = currentTime || (new Date().getTime());
+
 	var name,
-		enable;
+		value;
 
 	switch (state.lighting) {
 		case State.ON:
@@ -230,29 +243,74 @@ function tick(dt) {
 
 	switch (state.irrigation) {
 		case State.ON:
-			status.lighting = Status.ON;
-			break;
+			status.irrigation = Status.ON;
+			status.oxygen = Status.ON;
+			lastIrrigationTime = currentTime;
+		break;
 
 		case State.OFF:
-			status.lighting = Status.OFF;
-			break;
+			status.irrigation = Status.OFF;
+			status.oxygen = Status.OFF;
+		break;
 
 		case State.AUTO:
-			status.lighting = status.lightLevel / config.readingScale * 100 <= config.lighting.threshold
-				? Status.ON
-				: Status.OFF;
-			break;
+			if (status.oxygen === Status.OFF) {
+				if (
+					lastIrrigationTime === 0
+					|| currentTime - lastIrrigationTime > config.irrigation.interval - config.irrigation.preOxinateDuration
+				) {
+					status.irrigation = Status.OFF;
+					status.oxygen = Status.ON;
+					irrigationDuration = 0;
+					lastIrrigationTime = currentTime;
+				}
+			} else {
+				irrigationDuration += dt;
+
+				if (irrigationDuration > config.irrigation.duration + config.irrigation.preOxinateDuration) {
+					status.irrigation = Status.OFF;
+					status.oxygen = Status.OFF;
+				} else {
+					if (irrigationDuration < config.irrigation.preOxinateDuration) {
+						status.irrigation = Status.OFF;
+					} else {
+						status.irrigation = Status.ON;
+					}
+				}
+			}
+
+			//log('OXY', status.oxygen, 'IRR', status.irrigation, 'DUR', irrigationDuration, 'LAST', currentTime - lastIrrigationTime);
+		break;
 	}
 
-	// TODO Only send changes
 	for (name in state) {
-		sendSocket('state.' + name  + ':' + state[name]);
+		if (lastState === null || lastState[name] !== state[name]) {
+			sendSocket('state.' + name  + ':' + state[name]);
+		}
 	}
 
 	for (name in status) {
-		sendSerial(name  + ':' + status[name]);
-		sendSocket('status.' + name  + ':' + status[name]);
+		if (lastStatus === null || lastStatus[name] !== status[name]) {
+			value = status[name];
+
+			if (name === 'irrigation' && value !== 0) {
+				value = 200;
+			} else if (name === 'lighting' && value !== 0) {
+				value = 255;
+			}
+
+			sendSerial(name  + ':' + value);
+			sendSocket('status.' + name  + ':' + status[name]);
+		}
 	}
+
+	lastState = deepClone(state);
+	lastStatus = deepClone(status);
+	lastDt = dt;
+}
+
+function deepClone(obj) {
+	return JSON.parse(JSON.stringify(obj));
 }
 
 function onSerialOpen() {
