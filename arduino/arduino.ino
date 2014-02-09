@@ -76,7 +76,7 @@ void loop() {
   
   receiveData(action, val);
   
-  
+  new_time = millis();
   if (new_time - old_time > 3000) {
     if (action == None) action = Reset;
   }
@@ -133,7 +133,6 @@ void loop() {
       break;
     case Ping:
       old_time = new_time;
-      new_time = millis();
       break;
   }
 
