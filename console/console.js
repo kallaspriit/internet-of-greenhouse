@@ -1,4 +1,4 @@
-// TODO Set irrigation interval
+// TODO Pump intensity slider
 var maxHistorySize = 250,
 	readingScale = 1024,
 	handlers = {
@@ -237,7 +237,7 @@ function setupStateBtn(el) {
 	};
 
 	handlers['status.' + type] = function(request) {
-		updateStatusUI(type, parseInt(request.parameters[0]) === 1);
+		updateStatusUI(type, parseFloat(request.parameters[0]) !== 0);
 	};
 
 	el.prop('disabled', true);

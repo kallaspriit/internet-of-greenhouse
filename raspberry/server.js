@@ -6,9 +6,11 @@ var serialAPI = require('serialport'),
 	serialPort = null,
 	updateInterval = null;
 	lastTickTime = 0,
-	lastDt = 100,
+	tickInterval = 100,
+	lastDt = tickInterval,
 	lastIrrigationTime = 0,
 	irrigationDuration = 0,
+	targetLightIntensity = 0,
 	portName = null,
 	config = {
 		socket: {
@@ -25,7 +27,8 @@ var serialAPI = require('serialport'),
 		},
 		//acquisitionInterval: 60000
 		acquisitionInterval: 1000,
-		readingScale: 1024
+		readingScale: 1023,
+		lightFadeDuration: 1000,
 	},
 	State = {
 		OFF: 0,
@@ -51,24 +54,14 @@ var serialAPI = require('serialport'),
 	lastStatus = null,
 	handlers = {
 		serial: {
-			/*'irrigation': function(request) {
-				state.irrigation = parseInt(request.parameters[0], 10);
-
-				sendSocket('irrigation:' + state.irrigation);
-			},
-			'lighting': function(request) {
-				state.lighting = parseInt(request.parameters[0], 10);
-
-				sendSocket('lighting:' + state.lighting);
-			},
-			'oxygen': function(request) {
-				state.oxygen = parseInt(request.parameters[0], 10);
-
-				sendSocket('oxygen:' + state.oxygen);
-			},*/
-
 			'light-level': function(request) {
 				status.lightLevel = parseInt(request.parameters[0], 10);
+
+				if (status.lightLevel < 0) {
+					status.lightLevel = 0;
+				} else if (status.lightLevel > config.readingScale) {
+					status.lightLevel = config.readingScale;
+				}
 
 				sendSocket('light-level:' + status.lightLevel);
 			}
@@ -93,10 +86,10 @@ var serialAPI = require('serialport'),
 			'get-oxygen': function(request) {
 				sendSocket('oxygen:' + state.oxygen);
 			},
-
 			'get-light-level': function(request) {
 				sendSocket('oxygen:' + state.oxygen);
 			},
+
 			'get-config': function() {
 				lastState = null;
 				lastStatus = null;
@@ -134,6 +127,10 @@ function setState(name, value) {
 	state[name] =  parseInt(value, 10);
 
 	tick();
+}
+
+function lerp(a, b, u) {
+	return (1 - u) * a + u * b;
 }
 
 function sendConfig() {
@@ -202,11 +199,9 @@ function setupSocket(host, port) {
 }
 
 function setupTicker() {
-	var interval = 100;
-
 	setInterval(function() {
 		var currentTime = (new Date().getTime());
-			dt = interval;
+			dt = tickInterval;
 
 		if (lastTickTime !== 0) {
 			dt = currentTime - lastTickTime;
@@ -215,7 +210,11 @@ function setupTicker() {
 		lastTickTime = currentTime;
 
 		tick(dt, currentTime);
-	}, interval);
+	}, tickInterval);
+
+	setInterval(function() {
+		fastTick(10);
+	}, 10);
 }
 
 function tick(dt, currentTime) {
@@ -227,17 +226,17 @@ function tick(dt, currentTime) {
 
 	switch (state.lighting) {
 		case State.ON:
-			status.lighting = Status.ON;
+			targetLightIntensity = 1.0;
 		break;
 
 		case State.OFF:
-			status.lighting = Status.OFF;
+			targetLightIntensity = 0.0;
 		break;
 
 		case State.AUTO:
-			status.lighting = status.lightLevel / config.readingScale * 100 <= config.lighting.threshold
-				? Status.ON
-				: Status.OFF;
+			targetLightIntensity = status.lightLevel / config.readingScale * 100 <= config.lighting.threshold
+				? 1.0
+				: 0.0;
 		break;
 	}
 
@@ -278,10 +277,10 @@ function tick(dt, currentTime) {
 					}
 				}
 			}
-
-			//log('OXY', status.oxygen, 'IRR', status.irrigation, 'DUR', irrigationDuration, 'LAST', currentTime - lastIrrigationTime);
 		break;
 	}
+
+	//log('current', status.lighting, 'target', targetLightIntensity)
 
 	for (name in state) {
 		if (lastState === null || lastState[name] !== state[name]) {
@@ -295,8 +294,8 @@ function tick(dt, currentTime) {
 
 			if (name === 'irrigation' && value !== 0) {
 				value = 200;
-			} else if (name === 'lighting' && value !== 0) {
-				value = 255;
+			} else if (name === 'lighting') {
+				value *= 255;
 			}
 
 			sendSerial(name  + ':' + value);
@@ -309,14 +308,29 @@ function tick(dt, currentTime) {
 	lastDt = dt;
 }
 
+function fastTick(dt) {
+	var lastLightingIntensity = status.lighting;
+
+	status.lighting = interpolate(status.lighting, targetLightIntensity, config.lightFadeDuration, dt);
+
+	if (status.lighting !== lastLightingIntensity) {
+		sendSerial('lighting:' + status.lighting * 255);
+	}
+}
+
+function interpolate(current, target, timeMS, dt, min, max) {
+	min = min || 0;
+	max = max || 1;
+
+	return Math.min(Math.max(current + (timeMS / 1000) * (dt / 1000) * (current < target ? 1 : current > target ? -1 : 0), min), max);
+}
+
 function deepClone(obj) {
 	return JSON.parse(JSON.stringify(obj));
 }
 
 function onSerialOpen() {
-	sendSerial('get-irrigation');
-	sendSerial('get-lighting');
-	sendSerial('get-oxygen');
+	sendSerial('reset');
 
 	if (updateInterval !== null) {
 		clearInterval(updateInterval);
@@ -343,12 +357,8 @@ function handleSerialMessage(message) {
 	log('SERIAL < ' + message);
 
 	if (typeof(handlers.serial[request.name]) === 'function') {
-		//log('! Handling serial request', request);
-
 		handlers.serial[request.name].apply(handlers[request.name], [request]);
-	}/* else {
-		log('- Unknown serial request', request);
-	}*/
+	}
 }
 
 function handleSocketMessage(message) {
@@ -357,11 +367,7 @@ function handleSocketMessage(message) {
 	log('SOCKET < ' + message);
 
 	if (typeof(handlers.socket[request.name]) === 'function') {
-		//log('! Handling socket request', request);
-
 		handlers.socket[request.name].apply(handlers[request.name], [request]);
-	} else {
-		log('- Unknown socket request', request);
 	}
 }
 

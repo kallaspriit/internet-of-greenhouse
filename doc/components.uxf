@@ -4,8 +4,8 @@
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>410</x>
-      <y>600</y>
+      <x>490</x>
+      <y>570</y>
       <w>90</w>
       <h>110</h>
     </coordinates>
@@ -15,8 +15,8 @@
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>110</x>
-      <y>600</y>
+      <x>190</x>
+      <y>570</y>
       <w>50</w>
       <h>90</h>
     </coordinates>
@@ -26,8 +26,8 @@
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>640</x>
-      <y>60</y>
+      <x>720</x>
+      <y>90</y>
       <w>150</w>
       <h>70</h>
     </coordinates>
@@ -38,8 +38,8 @@ WebSocket</panel_attributes>
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>430</x>
-      <y>250</y>
+      <x>510</x>
+      <y>280</y>
       <w>210</w>
       <h>70</h>
     </coordinates>
@@ -52,8 +52,8 @@ not sure how to interface</panel_attributes>
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>1010</x>
-      <y>60</y>
+      <x>1090</x>
+      <y>90</y>
       <w>150</w>
       <h>70</h>
     </coordinates>
@@ -64,10 +64,10 @@ WebSocket</panel_attributes>
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>770</x>
-      <y>40</y>
+      <x>850</x>
+      <y>70</y>
       <w>270</w>
-      <h>330</h>
+      <h>260</h>
     </coordinates>
     <panel_attributes>bt=.
 Cloud Server</panel_attributes>
@@ -76,17 +76,16 @@ Cloud Server</panel_attributes>
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>1170</x>
-      <y>210</y>
+      <x>1250</x>
+      <y>190</y>
       <w>210</w>
-      <h>140</h>
+      <h>120</h>
     </coordinates>
     <panel_attributes>Functionality
 --
 water pump on/off/auto
 air pump on/off/auto
 lighting on/off/auto
-moisture graph
 ambient light graph
 water/air/light on graph</panel_attributes>
     <additional_attributes/>
@@ -94,8 +93,8 @@ water/air/light on graph</panel_attributes>
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>430</x>
-      <y>120</y>
+      <x>510</x>
+      <y>150</y>
       <w>210</w>
       <h>120</h>
     </coordinates>
@@ -111,8 +110,8 @@ automatic control logic</panel_attributes>
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>270</x>
-      <y>670</y>
+      <x>350</x>
+      <y>640</y>
       <w>170</w>
       <h>50</h>
     </coordinates>
@@ -124,8 +123,8 @@ photodiode/solar panel</panel_attributes>
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>800</x>
-      <y>120</y>
+      <x>880</x>
+      <y>100</y>
       <w>210</w>
       <h>100</h>
     </coordinates>
@@ -139,8 +138,8 @@ stores and shares data</panel_attributes>
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>480</x>
-      <y>610</y>
+      <x>560</x>
+      <y>580</y>
       <w>170</w>
       <h>50</h>
     </coordinates>
@@ -152,8 +151,8 @@ oxinate water</panel_attributes>
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>410</x>
-      <y>540</y>
+      <x>490</x>
+      <y>510</y>
       <w>90</w>
       <h>50</h>
     </coordinates>
@@ -163,25 +162,24 @@ oxinate water</panel_attributes>
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>70</x>
-      <y>300</y>
+      <x>150</x>
+      <y>350</y>
       <w>210</w>
-      <h>120</h>
+      <h>100</h>
     </coordinates>
     <panel_attributes>Response
 --
-light-level:0-256
-moisture-level:0-256
-irrigation:0/1 - off/on
-lighting:0/1
+light-level:0-255
+irrigation:0-255
+lighting:0-255
 oxygen:0/1</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>1170</x>
-      <y>120</y>
+      <x>1250</x>
+      <y>100</y>
       <w>210</w>
       <h>80</h>
     </coordinates>
@@ -195,8 +193,8 @@ Twitter Bootstrap</panel_attributes>
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>200</x>
-      <y>550</y>
+      <x>280</x>
+      <y>520</y>
       <w>90</w>
       <h>50</h>
     </coordinates>
@@ -206,8 +204,8 @@ Twitter Bootstrap</panel_attributes>
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>410</x>
-      <y>570</y>
+      <x>490</x>
+      <y>540</y>
       <w>90</w>
       <h>80</h>
     </coordinates>
@@ -217,30 +215,31 @@ Twitter Bootstrap</panel_attributes>
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>70</x>
-      <y>110</y>
+      <x>150</x>
+      <y>140</y>
       <w>210</w>
-      <h>170</h>
+      <h>200</h>
     </coordinates>
     <panel_attributes>Command
 --
-irrigation:0/1 - off/on
-lighting:0/1
-oxygen:0/1
+irrigation:0-255 - pwm
+lighting:0-255
+oxygen:0/1 - off/on
 get-light-level
-get-moisture-level
 get-irrigation
 get-lighting
-get-oxygen</panel_attributes>
+get-oxygen
+ping - every second or resets
+reset</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>0</x>
-      <y>40</y>
+      <x>80</x>
+      <y>70</y>
       <w>690</w>
-      <h>790</h>
+      <h>710</h>
     </coordinates>
     <panel_attributes>bt=.
 Internet of Greenhouse device</panel_attributes>
@@ -249,10 +248,10 @@ Internet of Greenhouse device</panel_attributes>
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>1140</x>
-      <y>40</y>
+      <x>1220</x>
+      <y>70</y>
       <w>270</w>
-      <h>330</h>
+      <h>260</h>
     </coordinates>
     <panel_attributes>bt=.
 Web Client - Browser</panel_attributes>
@@ -261,8 +260,8 @@ Web Client - Browser</panel_attributes>
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>60</x>
-      <y>550</y>
+      <x>140</x>
+      <y>520</y>
       <w>170</w>
       <h>80</h>
     </coordinates>
@@ -276,8 +275,8 @@ actuator commands</panel_attributes>
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>480</x>
-      <y>670</y>
+      <x>560</x>
+      <y>640</y>
       <w>170</w>
       <h>50</h>
     </coordinates>
@@ -289,8 +288,8 @@ power-led</panel_attributes>
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>200</x>
-      <y>630</y>
+      <x>280</x>
+      <y>600</y>
       <w>90</w>
       <h>60</h>
     </coordinates>
@@ -300,8 +299,8 @@ power-led</panel_attributes>
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>60</x>
-      <y>670</y>
+      <x>140</x>
+      <y>640</y>
       <w>170</w>
       <h>100</h>
     </coordinates>
@@ -316,8 +315,8 @@ web-socket client</panel_attributes>
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>200</x>
-      <y>600</y>
+      <x>280</x>
+      <y>570</y>
       <w>90</w>
       <h>90</h>
     </coordinates>
@@ -327,8 +326,8 @@ web-socket client</panel_attributes>
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>280</x>
-      <y>70</y>
+      <x>360</x>
+      <y>100</y>
       <w>140</w>
       <h>94</h>
     </coordinates>
@@ -340,8 +339,8 @@ serial</panel_attributes>
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>270</x>
-      <y>550</y>
+      <x>350</x>
+      <y>520</y>
       <w>170</w>
       <h>110</h>
     </coordinates>
@@ -357,10 +356,10 @@ power led driver</panel_attributes>
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>400</x>
-      <y>70</y>
+      <x>480</x>
+      <y>100</y>
       <w>270</w>
-      <h>420</h>
+      <h>370</h>
     </coordinates>
     <panel_attributes>bt=.
 Raspberry PI</panel_attributes>
@@ -369,8 +368,8 @@ Raspberry PI</panel_attributes>
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>480</x>
-      <y>550</y>
+      <x>560</x>
+      <y>520</y>
       <w>170</w>
       <h>50</h>
     </coordinates>
@@ -382,10 +381,10 @@ pump to top tank</panel_attributes>
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>40</x>
-      <y>520</y>
+      <x>120</x>
+      <y>490</y>
       <w>630</w>
-      <h>280</h>
+      <h>270</h>
     </coordinates>
     <panel_attributes>bt=.
 Hardware</panel_attributes>
@@ -394,10 +393,10 @@ Hardware</panel_attributes>
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>40</x>
-      <y>70</y>
+      <x>120</x>
+      <y>100</y>
       <w>270</w>
-      <h>420</h>
+      <h>370</h>
     </coordinates>
     <panel_attributes>bt=.
 Arduino</panel_attributes>
