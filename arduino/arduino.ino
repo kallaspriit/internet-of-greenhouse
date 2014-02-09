@@ -1,7 +1,53 @@
 #include "action.h"
 
+void setPwmFrequency(int pin, int divisor) {
+  /*
+  TIMER0B,       3 
+  TIMER3A,       5 
+  TIMER4D,       6 
+  TIMER1A,       9 
+  TIMER1B,       10 
+  TIMER0A,       11 
+  TIMER4A,       13 
+  */
+  byte mode;
+  if(pin == 3 || pin == 6 || pin == 9 || pin == 10) {
+    switch(divisor) {
+      case 1: mode = 0x01; break;
+      case 8: mode = 0x02; break;
+      case 64: mode = 0x03; break;
+      case 256: mode = 0x04; break;
+      case 1024: mode = 0x05; break;
+      default: return;
+    }
+    if(pin == 5 || pin == 6) {
+      TCCR0B = TCCR0B & 0b11111000 | mode;
+    } else {
+      TCCR1B = TCCR1B & 0b11111000 | mode;
+    }
+  } else if(pin == 3 || pin == 11) {
+    switch(divisor) {
+      case 1: mode = 0x01; break;
+      case 8: mode = 0x02; break;
+      case 32: mode = 0x03; break;
+      case 64: mode = 0x04; break;
+      case 128: mode = 0x05; break;
+      case 256: mode = 0x06; break;
+      case 1024: mode = 0x7; break;
+      default: return;
+    }
+    //TCCR2B = TCCR2B & 0b11111000 | mode;
+  }
+}
 
 void setup() {
+  //etPwmFrequency(3, 256);
+  //TCCR0B = TCCR0B & 0b11111000 | 256;
+  //setPwmFrequency(5, 256);
+  TCCR3B = TCCR3B & 0b11111000 | 256;
+  pinMode(4, OUTPUT);
+  pinMode(3, OUTPUT);
+  pinMode(5, OUTPUT);
   startCommunication();
 }
 
@@ -17,16 +63,23 @@ void loop() {
     case None:
       break;
     case SetLightsState:
+      analogWrite(3, val);
       break;
     case GetLightsState:
       sendFormattedStr("lighting", 0);
       break;
     case SetPumpState:
+      analogWrite(5, val);
       break;
     case GetPumpState:
       sendFormattedStr("irrigation", 0);
       break;
     case SetAirState:
+      if (val == 0) {
+        digitalWrite(4, HIGH);
+      } else {
+        digitalWrite(4, LOW);
+      }      
       break;
     case GetAirState:
       sendFormattedStr("oxygen", 0);
@@ -37,7 +90,7 @@ void loop() {
       sendFormattedStr("valve", 0);
       break;
     case GetLightLevel:
-      sensorValue = analogRead(A0);
+      sensorValue = analogRead(A5);
       sendFormattedStr("light-level", sensorValue);
       break;
     case GetMoistureLevel:
