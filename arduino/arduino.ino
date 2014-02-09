@@ -2,7 +2,7 @@
 
 
 #define LedsPin 3
-#define PumpPin 5
+#define PumpPin 6
 #define AirPumpPin 4
 #define LightSensorPin A5
 
@@ -61,7 +61,7 @@ void setup() {
   //etPwmFrequency(3, 256);
   //TCCR0B = TCCR0B & 0b11111000 | 256;
   //setPwmFrequency(5, 256);
-  TCCR3B = TCCR3B & 0b11111000 | 256;
+  //TCCR4B = TCCR4B & 0b11111000 | 256;
   pinMode(LedsPin, OUTPUT);
   pinMode(PumpPin, OUTPUT);
   pinMode(AirPumpPin, OUTPUT);
