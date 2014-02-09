@@ -11,6 +11,7 @@ var serialAPI = require('serialport'),
 	lastIrrigationTime = 0,
 	irrigationDuration = 0,
 	targetLightIntensity = 0,
+	lastPingTime = 0,
 	portName = null,
 	config = {
 		socket: {
@@ -29,6 +30,7 @@ var serialAPI = require('serialport'),
 		acquisitionInterval: 1000,
 		readingScale: 1023,
 		lightFadeDuration: 1000,
+		pingInterval: 1000
 	},
 	State = {
 		OFF: 0,
@@ -301,6 +303,12 @@ function tick(dt, currentTime) {
 			sendSerial(name  + ':' + value);
 			sendSocket('status.' + name  + ':' + status[name]);
 		}
+	}
+
+	if (currentTime - lastPingTime > config.pingInterval) {
+		sendSerial('ping');
+
+		lastPingTime = currentTime;
 	}
 
 	lastState = deepClone(state);

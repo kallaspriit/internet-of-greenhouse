@@ -11,6 +11,9 @@ int irrigationIntensity = 0;
 int oxygen = 0;
 int lightLevel = 128;
 
+int lightingMin = 400;
+int lightingMax = 1000;
+
 void setup() {
   Serial.begin(9600);
   
@@ -93,7 +96,7 @@ void handleCommand(String param, int value) {
       lightLevel = 255; 
     }*/
     
-    lightLevel = analogRead(lightLevelPin);
+    lightLevel = map(analogRead(lightLevelPin), lightingMin, lightingMax, 0, 1023);
     
     Serial.print("light-level:");
     Serial.println(lightLevel);
