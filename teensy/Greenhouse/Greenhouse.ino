@@ -1,14 +1,23 @@
-int ledPin = 13;
+int ledPin = 3;
+int irrigationPin = 4;
+int oxygenPin = 5;
+int lightLevelPin = 14;
+
 int incomingByte;
 int irrigation = 0;
 int lighting = 1;
+int lightingIntensity = 0;
+int irrigationIntensity = 0;
 int oxygen = 0;
 int lightLevel = 128;
 
 void setup() {
   Serial.begin(9600);
   
-  pinMode(ledPin, OUTPUT);     
+  pinMode(ledPin, OUTPUT);
+  pinMode(irrigationPin, OUTPUT);
+  pinMode(oxygenPin, OUTPUT);
+  pinMode(lightLevelPin, INPUT);
 }
 
 void loop() {
@@ -38,14 +47,34 @@ void loop() {
 }
 
 void handleCommand(String param, int value) {
-  if (param == "lighting") {
+  if (param == "irrigation") {
     if (value != 0) {
-      lighting = 1;
+      irrigation = 1;
+      irrigationIntensity = value;
     } else {
       lighting = 0;
+      irrigationIntensity = 0;
     }
     
-    digitalWrite(ledPin, lighting ? HIGH : LOW);
+    analogWrite(irrigationPin, irrigationIntensity);
+  } else if (param == "lighting") {
+    if (value != 0) {
+      lighting = 1;
+      lightingIntensity = value;
+    } else {
+      lighting = 0;
+      lightingIntensity = 0;
+    }
+    
+    analogWrite(ledPin, lightingIntensity);
+  } else if (param == "oxygen") {
+    if (value != 0) {
+      oxygen = 1;
+    } else {
+      oxygen = 0;
+    }
+    
+    digitalWrite(oxygenPin, oxygen == 1 ? HIGH : LOW);
   } else if (param == "get-irrigation") {
     Serial.print("irrigation:");
     Serial.println(irrigation);
@@ -56,13 +85,15 @@ void handleCommand(String param, int value) {
     Serial.print("oxygen:");
     Serial.println(oxygen);
   } else if (param == "get-light-level") {
-    lightLevel += random(-5, 5);
+    /*lightLevel += random(-5, 5);
     
     if (lightLevel < 0) {
       lightLevel = 0; 
     } else if (lightLevel > 255) {
       lightLevel = 255; 
-    }
+    }*/
+    
+    lightLevel = analogRead(lightLevelPin);
     
     Serial.print("light-level:");
     Serial.println(lightLevel);

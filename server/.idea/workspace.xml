@@ -26,7 +26,7 @@
       <file leaf-file-name="server.js" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/server.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="8" column="24" selection-start="259" selection-end="259" vertical-scroll-proportion="0.15472127" vertical-offset="0" max-vertical-offset="3383">
+            <state line="69" column="15" selection-start="1353" selection-end="1357" vertical-scroll-proportion="0.33293125" vertical-offset="897" max-vertical-offset="3383">
               <folding />
             </state>
           </provider>
@@ -145,7 +145,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="960" y="0" width="960" height="1040" extended-state="1" />
+    <frame x="960" y="0" width="960" height="1040" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
@@ -181,7 +181,7 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/server.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="8" column="24" selection-start="259" selection-end="259" vertical-scroll-proportion="0.15472127" vertical-offset="0" max-vertical-offset="3383">
+        <state line="69" column="15" selection-start="1353" selection-end="1357" vertical-scroll-proportion="0.33293125" vertical-offset="897" max-vertical-offset="3383">
           <folding />
         </state>
       </provider>
