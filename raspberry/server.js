@@ -293,9 +293,9 @@ function tick(dt, currentTime) {
 		if (lastStatus === null || lastStatus[name] !== status[name]) {
 			value = status[name];
 
-			if (name === 'oxygen') {
+			if (name === 'oxygen' && value === 1) {
 				value = 128;
-			} else if (name === 'lighting') {
+			} else if (name === 'lighting' && value === 1) {
 				value = 255;
 			}
 

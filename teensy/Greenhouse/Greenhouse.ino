@@ -39,7 +39,7 @@ void loop() {
 
 void handleCommand(String param, int value) {
   if (param == "lighting") {
-    if (value == 1) {
+    if (value != 0) {
       lighting = 1;
     } else {
       lighting = 0;
