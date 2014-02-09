@@ -223,7 +223,7 @@ function tick(dt, currentTime) {
 	currentTime = currentTime || (new Date().getTime());
 
 	var name,
-		enable;
+		value;
 
 	switch (state.lighting) {
 		case State.ON:
@@ -291,7 +291,15 @@ function tick(dt, currentTime) {
 
 	for (name in status) {
 		if (lastStatus === null || lastStatus[name] !== status[name]) {
-			sendSerial(name  + ':' + status[name]);
+			value = status[name];
+
+			if (name === 'oxygen') {
+				value = 128;
+			} else if (name === 'lighting') {
+				value = 255;
+			}
+
+			sendSerial(name  + ':' + value);
 			sendSocket('status.' + name  + ':' + status[name]);
 		}
 	}
