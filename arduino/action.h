@@ -18,6 +18,9 @@ typedef enum Action {
   GetLightLevel,
   GetMoistureLevel,
   
+  Ping,
+  Reset,
+  
   None,
   Unknown
 };
