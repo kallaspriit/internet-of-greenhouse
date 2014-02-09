@@ -294,7 +294,7 @@ function tick(dt, currentTime) {
 			value = status[name];
 
 			if (name === 'irrigation' && value !== 0) {
-				value = 172;
+				value = 200;
 			} else if (name === 'lighting' && value !== 0) {
 				value = 255;
 			}
